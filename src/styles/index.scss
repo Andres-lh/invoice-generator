@@ -1,0 +1,12 @@
+@forward 'invoice';
+@forward 'products';
+@import url('https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+    letter-spacing: 0.5px;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+}
