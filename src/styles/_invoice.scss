@@ -81,24 +81,6 @@
             padding: 5px 5px;
             margin-left: 10px;
         }
-        button {
-            background: #5dc96d;
-            border-radius: 999px;
-            box-shadow: #5d60f0 0 10px 20px -10px;
-            color: #FFFFFF;
-            cursor: pointer;
-            font-size: 20px;
-            font-weight: 500;
-            opacity: 1;
-            outline: 0 solid transparent;
-            padding: 8px 18px;
-            width: fit-content;
-            border: 0;
-            margin-left: 10px;
-            &:hover {
-                background: #4dad5b;
-            }
-        }
     }
 
     @media (max-width: 500px) {

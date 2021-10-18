@@ -1,5 +1,16 @@
 import { firestore } from './firebase.js'
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
+import { getProduct } from "./api.js"
+
+
+let cart = JSON.parse(localStorage.getItem('invoice')) ||
+    {
+    discount: false,
+    promotionalCodes: ['1234', '5678'],
+    products: []
+    }; 
+
+//---------------------HTML Elements -----------------------------------
 
 const productContainer = document.getElementById('products-container');
 const invoiceItems = document.getElementById('invoice-items');
@@ -7,16 +18,13 @@ const tableHeader = document.getElementById('table-header')
 const subtotalElement = document.getElementById('subtotal');
 const formElement = document.getElementById('code-form');
 const invoiceTitleElement = document.getElementById('invoice-title');
+const resetButton = document.getElementById('btn-reset');
 
-let cart = {
-    discount: false,
-    promotionalCodes: ['1234', '5678'],
-    products: []
-}
 
 //------------------------- Renders ---------------------------------------------
 
 export const renderApp = async() => {
+    updateInvoice();
     const querySnapshot = await getDocs(collection(firestore, "Products"));
 
     querySnapshot.forEach((doc) => {
@@ -47,9 +55,7 @@ export const renderApp = async() => {
                     const item = await getProduct(id);
                     cart.products.push({...item, quantity: 1, itemSubtotal: item.price});  
                 }
-                renderInvoice();
-                updateInvoiceSubtotal();
-                console.log(cart);
+                updateInvoice();
             } catch (error) {
                 console.log(error)
             }
@@ -60,7 +66,7 @@ export const renderApp = async() => {
 const renderInvoice = () => {
     invoiceItems.innerHTML = "";
 
-    invoiceTitleElement.innerHTML = `<h1>Invoice Generated</h1>`
+    invoiceTitleElement.innerHTML = `<h1>Invoice</h1>`
 
     tableHeader.innerHTML = `<tr>
         <th>PRODUCT</th>
@@ -91,7 +97,7 @@ const renderInvoice = () => {
     formElement.innerHTML = `
         <label>Add promotional code</label>
         <input type="text" id="promotional-code">
-        <button id="btn-code">Enter</button>
+        <button id="btn-code" class="btn btn-green">Enter</button>
     `
 
     const input = document.querySelectorAll(".input-value");
@@ -104,51 +110,12 @@ const renderInvoice = () => {
     removeButton.forEach((i) => {
         i.addEventListener('click', removeProduct)
     })
-}
 
-//------------------- fecth product -------------------------
-
-const getProduct = async(id) => {
-    const docRef = doc(firestore, `Products/${id}`);
-    const productDoc = await getDoc(docRef);
-    if(productDoc.exists()){
-        const product = productDoc.data();
-        return {id, name: product.name, price: product.price};
-    }
-}
-
-//------------------------Remove product --------------------------------
-
-function removeProduct(e){
-    let id = e.target.dataset.id;
-    cart.products = cart.products.filter((item) => item.id !== id);
-    updateInvoiceSubtotal();
-    renderInvoice();
+    localStorage.setItem('invoice', JSON.stringify(cart));
 }
 
 
-//---------------------- Updates ------------------------------
-
-function updateCart(e) {
-    let id = e.target.dataset.id;
-    let value = e.target.value
-    updateValue(id, value);
-    updateInvoiceSubtotal();
-    renderInvoice();
-}
-
-function updateValue(id, value) {
-    cart.products = cart.products.map((item) => {
-        if(item.id === id) {
-            item.quantity = parseInt(value);
-            item.itemSubtotal = item.price * item.quantity;
-        }
-        return item;
-    })
-    console.log(cart.products)
-}
-
-function updateInvoiceSubtotal() {
+const renderSubtotal = () => {
     let subTotalPrice = 0, 
         totalPrice = 0, 
         discount = 0,
@@ -180,20 +147,69 @@ function updateInvoiceSubtotal() {
         </tr> `
 }
 
+
+//------------------------Remove product --------------------------------
+
+const removeProduct = (e) => {
+    let id = e.target.dataset.id;
+    cart.products = cart.products.filter((item) => item.id !== id);
+    updateInvoice();
+}
+
+
+//---------------------- Updates ------------------------------
+
+const updateInvoice = () => {
+    renderSubtotal();
+    renderInvoice();
+}
+
+
+const updateCart = (e) => {
+    let id = e.target.dataset.id;
+    let value = e.target.value
+    updateValue(id, value);
+    updateInvoice();
+
+}
+
+const updateValue = (id, value) => {
+    cart.products = cart.products.map((item) => {
+        if(item.id === id) {
+            item.quantity = parseInt(value);
+            item.itemSubtotal = item.price * item.quantity;
+        }
+        return item;
+    })
+}
+
+
+
 //----------------- Promocional code form -------------------------------
 
 formElement.addEventListener('submit', e => {
     e.preventDefault();
 
     const promotionalCode = formElement['promotional-code'].value;
-    console.log(promotionalCode, cart.promotionalCodes)
     if(cart.promotionalCodes.some((code) => code === promotionalCode)){
         cart.discount = true;
-        updateInvoiceSubtotal();
+        updateInvoice();
     } else {
         console.log('no existe');
     }  
-    console.log(cart)
+    localStorage.setItem('invoice', JSON.stringify({...cart, discount: true}));
 })
 
+//-------------------------------Reset  --------------------------
+
+
+resetButton.addEventListener('click', e => {
+    localStorage.setItem('invoice', JSON.stringify({
+        discount: false,
+        promotionalCodes: ['1234', '5678'],
+        products: []
+        }));
+
+        location.reload();
+} )
 

@@ -1,0 +1,32 @@
+.btn {
+            
+    border-radius: 999px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 500;
+    opacity: 1;
+    outline: 0 solid transparent;
+    padding: 8px 18px;
+    width: fit-content;
+    border: 0;
+    margin-left: 10px;
+    
+}
+
+.btn-green {
+    background: #5dc96d;
+    box-shadow: #5d60f0 0 10px 20px -10px;
+    &:hover {
+        background: #4dad5b;
+    }
+}
+
+.btn-red {
+    background: #c04545;
+    box-shadow: #5d60f0 0 10px 20px -10px;
+    margin-top: 50px;
+    &:hover {
+        background: #944040;
+    }
+}

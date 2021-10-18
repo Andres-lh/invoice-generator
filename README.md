@@ -1,6 +1,6 @@
 # Invoice Generator
 
-Web application that generates a receipt according to the added products, to which a discount can be applied through a promotional code.
+Web application that generates a purchase invoice according to the added products, to which a discount can be applied through a promotional code.
 
 ### Technologies used
 - Vanilla JavaScript.
