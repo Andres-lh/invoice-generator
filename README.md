@@ -1,4 +1,4 @@
-#Invoice Generator
+# Invoice Generator
 
 Web application that generates a receipt according to the added products, to which a discount can be applied through a promotional code.
 
@@ -25,15 +25,7 @@ Follow these simple steps to run the project locally:
 3. Start the project:
 `npm run dev`
 
-###FlowChart
+### FlowChart
 
-```flow
-st=>start: App Starts
-op=>operation: Login operation
-cond=>condition: Successful Yes or No?
-e=>end: To admin
+[![](https://github.com/Andres-lh/invoice-generator/blob/main/screenshot/Flowchart.png?raw=true)](https://github.com/Andres-lh/invoice-generator/blob/main/screenshot/flowchart.png?raw=true)
 
-st->op->cond
-cond(yes)->e
-cond(no)->op
-```
