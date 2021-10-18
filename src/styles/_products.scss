@@ -64,4 +64,25 @@
             }
         }
     }
+    
+    @media (max-width:1200px) {
+        &-grid {
+            grid-template-columns: repeat(3, 15rem);
+            grid-template-rows: repeat(3, 15rem);
+        }
+    }
+
+    @media (max-width:950px) {
+        &-grid {
+            grid-template-columns: repeat(2, 15rem);
+            grid-template-rows: repeat(4, 15rem);
+        }
+    }
+
+    @media (max-width: 600px) {
+        &-grid {
+            grid-template-columns: repeat(1, 15rem);
+            grid-template-rows: repeat(8, 15rem);
+        }
+    }
 }

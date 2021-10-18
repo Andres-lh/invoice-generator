@@ -10,7 +10,7 @@ const invoiceTitleElement = document.getElementById('invoice-title');
 
 let cart = {
     discount: false,
-    promotionalCodes: ['abc', 'bca'],
+    promotionalCodes: ['1234', '5678'],
     products: []
 }
 

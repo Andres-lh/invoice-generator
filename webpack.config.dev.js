@@ -13,7 +13,7 @@ module.exports = {
     resolve: {
         extensions: ['.js'], 
     },
-    mode: 'production',
+    mode: 'development',
     module: {
         rules: [
             {
@@ -41,11 +41,8 @@ module.exports = {
         }),
         new MiniCssExtractPlugin(),
     ],
-    optimization: {
-        minimize: true,
-        minimizer: [
-          new CssMinimizerPlugin(),
-          new TerserPlugin(),
-        ]
+    devServer: {
+        historyApiFallback: true,
+        port: 3000
     }
 }
